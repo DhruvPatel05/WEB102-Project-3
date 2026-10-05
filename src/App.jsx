@@ -58,15 +58,68 @@ function App() {
   }
 ]
 
-  const [currentCard, setCurrentCard] = useState(0)
-  const getRandomCard = () => {
-  let randomIndex = Math.floor(Math.random() * flashcards.length)
+const [currentCard, setCurrentCard] = useState(0)
+const [guess, setGuess] = useState('')
+const [feedback, setFeedback] = useState('')
+const [currentStreak, setCurrentStreak] = useState(0)
+const [longestStreak, setLongestStreak] = useState(0)
+const [cardOrder, setCardOrder] = useState(flashcards)
 
-  while (randomIndex === currentCard) {
-    randomIndex = Math.floor(Math.random() * flashcards.length)
+const nextCard = () => {
+  if (currentCard < cardOrder.length - 1) {
+    setCurrentCard(currentCard + 1)
+    setGuess('')
+    setFeedback('')
+  }
+}
+
+const previousCard = () => {
+  if (currentCard > 0) {
+    setCurrentCard(currentCard - 1)
+    setGuess('')
+    setFeedback('')
+  }
+}
+const shuffleCards = () => {
+  const shuffled = [...cardOrder]
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
 
-  setCurrentCard(randomIndex)
+  setCardOrder(shuffled)
+  setCurrentCard(0)
+  setGuess('')
+  setFeedback('')
+}
+const checkAnswer = () => {
+  const userAnswer = guess
+    .replace(/[^\w\s]/g, '')
+    .trim()
+    .toLowerCase()
+
+  const correctAnswer = cardOrder[currentCard].answer
+    .replace(/[^\w\s]/g, '')
+    .trim()
+    .toLowerCase()
+
+  if (userAnswer === correctAnswer) {
+    if (feedback !== 'correct') {
+      const newStreak = currentStreak + 1
+
+      setCurrentStreak(newStreak)
+
+      if (newStreak > longestStreak) {
+        setLongestStreak(newStreak)
+      }
+    }
+
+    setFeedback('correct')
+  } else {
+    setCurrentStreak(0)
+    setFeedback('incorrect')
+  }
 }
 
   return (
@@ -80,22 +133,65 @@ function App() {
         Test your knowledge of U.S. states, landmarks, and famous places
         using these flashcards!
       </p>
-  <p>Total Cards: {flashcards.length}</p>
+  <p>Total Cards: {cardOrder.length}</p>
 
   <p className="card-counter">
-      Card {currentCard + 1} of {flashcards.length}
+      Card {currentCard + 1} of {cardOrder.length}
   </p>     
+  <div className="streak-container">
+  <p>🔥 Current Streak: {currentStreak}</p>
+  <p>🏆 Longest Streak: {longestStreak}</p>
+</div>
+<button className="shuffle-button" onClick={shuffleCards}>
+  🔀 Shuffle Cards
+</button>
   <Flashcard
   key={currentCard}
-  question={flashcards[currentCard].question}
-  answer={flashcards[currentCard].answer}
-  difficulty={flashcards[currentCard].difficulty}
-  image={flashcards[currentCard].image}
-
+  question={cardOrder[currentCard].question}
+  answer={cardOrder[currentCard].answer}
+  difficulty={cardOrder[currentCard].difficulty}
+  image={cardOrder[currentCard].image}
 />
-  <button className="next-button" onClick={getRandomCard}>
-  Next Card →
-</button> 
+<div className="guess-section">
+  <input
+    type="text"
+    placeholder="Enter your guess"
+    value={guess}
+    onChange={(e) => {
+      setGuess(e.target.value)
+      setFeedback('')
+    }}
+  />
+
+  <button onClick={checkAnswer}>
+    Submit Guess
+  </button>
+
+  {feedback === 'correct' && (
+    <p className="correct-feedback">Correct! 🎉</p>
+  )}
+
+  {feedback === 'incorrect' && (
+    <p className="incorrect-feedback">Incorrect. Try again!</p>
+  )}
+</div>
+  <div className="navigation-buttons">
+  <button
+    className="previous-button"
+    onClick={previousCard}
+    disabled={currentCard === 0}
+  >
+    ← Previous
+  </button>
+
+  <button
+    className="next-button"
+    onClick={nextCard}
+    disabled={currentCard === cardOrder.length - 1}
+  >
+    Next →
+  </button>
+</div> 
     </div>
   )
 }

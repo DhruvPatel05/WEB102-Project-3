@@ -107,3 +107,109 @@
   border-radius: 10px;
   margin: 0 auto 12px;
 }
+
+/* Project 3 - Guess Section */
+
+.guess-section {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.guess-section input {
+  width: 220px;
+  padding: 12px 15px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+.guess-section input:focus {
+  border-color: #2563eb;
+}
+
+.guess-section button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2563eb;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.correct-feedback,
+.incorrect-feedback {
+  width: 100%;
+  margin: 2px 0 5px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.correct-feedback {
+  color: #15803d;
+}
+
+.incorrect-feedback {
+  color: #dc2626;
+}
+
+
+/* Project 3 - Navigation */
+
+.navigation-buttons {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.previous-button,
+.next-button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2563eb;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.previous-button:hover:not(:disabled),
+.next-button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.previous-button:disabled,
+.next-button:disabled {
+  background-color: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Shuffle Button */
+
+.shuffle-button {
+  margin: 8px 0 18px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: #7c3aed;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.shuffle-button:hover {
+  background-color: #6d28d9;
+  transform: translateY(-1px);
+}
